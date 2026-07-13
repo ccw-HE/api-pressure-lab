@@ -1,8 +1,15 @@
 # API Pressure Lab
 
-Windows 本机 API 压测控制台，面向 newapi / OpenAI 兼容接口，同时预置 Claude Messages 与 Gemini generateContent 协议格式。
+API Pressure Lab 是一个运行在 Windows 本机的 API 压测控制台，支持 NewAPI、OpenAI 兼容接口、Claude Messages 和 Gemini generateContent。
 
-白色主题工具界面，三栏应用壳：左侧真实页面导航、中间当前页面、右侧常驻关键运行状态。
+项目使用 React、Vite 和 Express 构建。界面分为页面导航、当前工作区和常驻运行状态三部分，可配置多个 API，观察实时指标，并保留本地历史记录。
+
+## 运行环境
+
+- Windows 10 或 Windows 11
+- Node.js 20.18.1 或更高版本
+- npm 10 或兼容版本
+- 默认服务地址：`http://127.0.0.1:4217`
 
 ## 启动
 
@@ -12,10 +19,16 @@ Windows 本机 API 压测控制台，面向 newapi / OpenAI 兼容接口，同�
 
 结束方式：在启动窗口按 `Ctrl+C` 直接结束，无需二次确认。
 
+也可以在终端中停止服务：
+
+```powershell
+.\Start.bat stop
+```
+
 手动方式：
 
 ```powershell
-npm install
+npm ci
 npm run build
 npm start
 ```
@@ -30,6 +43,12 @@ npm run dev
 ```
 
 开发模式前端地址通常是 `http://127.0.0.1:5173`。
+
+## 使用边界
+
+只对自己拥有或已经获得明确授权的 API 服务进行压力测试。建议从较低的 RPM、并发数和请求总量开始，确认服务限额、计费方式与上游使用条款后再提高负载。
+
+项目默认只监听 `127.0.0.1`。如果修改监听地址，请同时评估访问控制、网络暴露和本地 API Key 的安全风险。
 
 ## 页面结构
 
@@ -75,13 +94,29 @@ npm run dev
 
 ## 测试
 
+安装锁文件指定的依赖并运行完整检查：
+
 ```powershell
+npm ci
 npm test
 npm run build
 ```
 
+测试只使用本地 mock 服务，不会向真实第三方 API 发送请求。
+
+## 项目结构
+
+```text
+server/     Express 服务、压力调度、协议适配与本地日志
+src/        React WebUI
+scripts/    Windows 进程启动与停止辅助脚本
+tests/      Vitest 单元测试和本地协议测试
+Start.bat   Windows 启动入口
+```
+
 ## 隐私与本地数据
 
-- `data/` 仅保存本地配置、运行指标和历史日志，不纳入 Git。
-- `data/config.json` 可能包含 API Key，请勿上传或分享。
-- `PRODUCT.md` 与 `node_modules/` 仅保留在本地，不纳入发布仓库。
+- `data/config.json` 可能以明文保存 API Key，浏览器本地存储也会保存当前配置。
+- `data/`、`node_modules/`、`dist/`、运行日志和 PID 文件均被 Git 忽略。
+- 请求预览和配置接口会对 API Key 脱敏，但仍应避免分享本地配置文件、浏览器数据目录和运行日志。
+- 仓库不包含示例密钥，提交前应再次运行敏感信息扫描。
