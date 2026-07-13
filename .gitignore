@@ -1,0 +1,12 @@
+node_modules/
+dist/
+data/
+coverage/
+.vite/
+.snow/
+api-pressure-lab.pid
+api-pressure-lab.server.log
+api-pressure-lab.server.err.log
+_codex_screenshots/
+.impeccable/
+PRODUCT.md
