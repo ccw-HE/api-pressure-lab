@@ -1,6 +1,6 @@
 {
   "name": "api-pressure-lab",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Windows 本地 API 压测工具，支持 OpenAI 兼容、Claude Messages 和 Gemini generateContent。",
   "private": true,
   "license": "MIT",
